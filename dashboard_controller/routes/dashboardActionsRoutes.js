@@ -8,19 +8,19 @@ const checkAccess = require("../middleware/checkAccess");
 
 dashboardActionRouter.get(
   "/",
-  [checkAuthentication, checkAccess],
+  [checkAuthentication, checkAccess("read")],
   dashboardActionController.getDashboardById
 );
 
 dashboardActionRouter.post(
   "/change_dashboard_name",
-  [checkAuthentication, checkAccess],
+  [checkAuthentication, checkAccess("name_change")],
   dashboardActionController.changeDashboardName
 );
 
 dashboardActionRouter.post(
   "/add_user",
-  [checkAuthentication, checkAccess],
+  [checkAuthentication, checkAccess("add_user")],
   dashboardActionController.addUserToDashboard
 );
 

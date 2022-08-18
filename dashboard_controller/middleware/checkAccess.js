@@ -11,7 +11,7 @@ const client = new Client({
 });
 client.connect();
 
-const checkAccess = (req, res, next) => {
+const checkAccess = (permission) => (req, res, next) => {
   // check dashboard with id from param
   client
     .query(`SELECT * FROM dashboards WHERE id = $1`, [req.params.id])
@@ -36,8 +36,17 @@ const checkAccess = (req, res, next) => {
                 message: "User not authorized to access dashboard.",
               });
             } else {
-              req.dashboard = dashboard.rows[0];
-              next();
+              if (userdashboard.rows[0].permissions.includes(permission)) {
+                req.dashboard = dashboard.rows[0];
+                next();
+              }
+              if (userdashboard.rows[0].access.includes(permission)) {
+                req.dashboard = dashboard.rows[0];
+                next();
+              }
+              res.status(403).json({
+                message: "User not authorized to access this action.",
+              });
             }
           })
           .catch((err) => {
