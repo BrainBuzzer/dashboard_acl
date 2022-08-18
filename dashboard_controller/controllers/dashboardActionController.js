@@ -1,3 +1,5 @@
+const permissionsConst = require("../constants/permissions");
+const accessConst = require("../constants/access");
 const { Client } = require("pg");
 require("dotenv").config();
 
@@ -19,7 +21,7 @@ exports.getDashboardById = (req, res) => {
 };
 
 exports.addUserToDashboard = (req, res) => {
-  const { user_id } = req.body;
+  let { user_id, permissions, access } = req.body;
   // check if user id exists in users table
   client.query(
     "SELECT * FROM users WHERE id = $1",
@@ -40,22 +42,53 @@ exports.addUserToDashboard = (req, res) => {
     }
   );
 
-  client.query(
-    `INSERT INTO userdashboard (dashboard_id, user_id, permissions, access) VALUES ($1, $2, '{}', '{}')`,
-    [req.params.id, user_id],
-    (err, _res) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({
-          error: err,
-        });
-      } else {
-        res.status(200).json({
-          message: "User added to dashboard.",
-        });
+  // verify permissions
+  let validPermissions = true;
+  if (permissions && permissions.length > 0) {
+    permissions.includes("read") || permissions.push("read");
+    permissions.forEach((permission) => {
+      if (!permissionsConst.hasOwnProperty(permission)) {
+        validPermissions = false;
       }
-    }
-  );
+    });
+  } else {
+    permissions = ["read"];
+  }
+
+  // verify access
+  let validAccess = true;
+  if (access && access.length > 0) {
+    access.forEach((access) => {
+      if (!accessConst.hasOwnProperty(access)) {
+        validAccess = false;
+      }
+    });
+  } else {
+    access = [];
+  }
+
+  if (validPermissions && validAccess) {
+    client.query(
+      `INSERT INTO userdashboard (dashboard_id, user_id, permissions, access) VALUES ($1, $2, $3, $4)`,
+      [req.params.id, user_id, permissions, access],
+      (err, _res) => {
+        if (err) {
+          console.log(err);
+          res.status(500).json({
+            error: err,
+          });
+        } else {
+          res.status(200).json({
+            message: "User added to dashboard.",
+          });
+        }
+      }
+    );
+  } else {
+    res.status(400).json({
+      message: "Invalid permissions or access.",
+    });
+  }
 };
 
 exports.changeDashboardName = (req, res) => {
