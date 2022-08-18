@@ -43,6 +43,7 @@ exports.createDashboard = (req, res) => {
 exports.getAllDashboards = (req, res) => {
   client.query(
     `SELECT * FROM dashboards WHERE user_id = $1`,
+    // TODO: add the dashboards which user is just part of.
     [req.user.id],
     (err, response) => {
       if (err) {

@@ -83,9 +83,10 @@ exports.addUserToDashboard = (req, res) => {
  * @param {*} res
  */
 exports.removeUserFromDashboard = (req, res) => {
+  const { user_id } = req.body;
   client.query(
     `DELETE FROM userdashboard WHERE user_id = $1 AND dashboard_id = $2`,
-    [req.params.user_id, req.params.id],
+    [user_id, req.params.id],
     (err, _res) => {
       if (err) {
         console.log(err);
@@ -107,13 +108,13 @@ exports.removeUserFromDashboard = (req, res) => {
  * @param {*} res
  */
 exports.changePermissions = (req, res) => {
-  let { permissions, access } = req.body;
+  let { user_id, permissions, access } = req.body;
   const valid = checkValidity(permissions, access);
 
   if (valid) {
     client.query(
       `UPDATE userdashboard SET permissions = $1, access = $2 WHERE user_id = $3 AND dashboard_id = $4`,
-      [permissions, access, req.params.user_id, req.params.id],
+      [permissions, access, user_id, req.params.id],
       (err, _res) => {
         if (err) {
           console.log(err);
