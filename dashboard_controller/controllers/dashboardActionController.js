@@ -21,14 +21,24 @@ exports.getDashboardById = (req, res) => {
 exports.addUserToDashboard = (req, res) => {
   const { user_id } = req.body;
   // check if user id exists in users table
-  client.query("SELECT * FROM users WHERE id = $1", [user_id], (err, _) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        error: err,
-      });
+  client.query(
+    "SELECT * FROM users WHERE id = $1",
+    [user_id],
+    (err, response) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({
+          error: err,
+        });
+      } else {
+        if (response.rows.length === 0) {
+          res.status(404).json({
+            message: "User not found.",
+          });
+        }
+      }
     }
-  });
+  );
 
   client.query(
     `INSERT INTO userdashboard (dashboard_id, user_id, permissions, access) VALUES ($1, $2, '{}', '{}')`,
