@@ -1,6 +1,8 @@
 # Dashboard ACL
 
-This is a dashboard creation app that provides functionality for access as per the user's permissions. It has two levels of permissions embedded. One is simple read, write, comment. And the other is to access specific sub-parts of the project. Such as user management, or dashboard settings.
+This is a dashboard creation app that provides functionality for access as per the user's permissions. It has two levels of permissions embedded. One is simple read, write, comment. And the other is to access specific sub-parts of the project. Such as user management, or dashboard settings. You can look for the API documentation here: <https://documenter.getpostman.com/view/14884387/VUqmwzZ3>
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14884387-84e7e407-7747-4df1-8a0e-6e5a3cffec6c?action=collection%2Ffork&collection-url=entityId%3D14884387-84e7e407-7747-4df1-8a0e-6e5a3cffec6c%26entityType%3Dcollection%26workspaceId%3D518bd8cf-3185-4d68-8bf7-43eb7dbb41a4)
 
 ## Description
 
