@@ -1,0 +1,30 @@
+{
+  "name": "dashboard_acl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "authentication:setup": "cd authentication && npm install",
+    "dashboard:setup": "cd dashboard_controller && npm install",
+    "db:setup": "cd db_setup && npm install",
+    "db:migrate": "node ./db_setup/index.js",
+    "setup": "npm-run-all authentication:setup dashboard:setup db:setup db:migrate",
+    "authentication:start": "node ./authentication/index.js",
+    "dashboard:start": "node ./dashboard_controller/index.js",
+    "start": "npm-run-all --parallel authentication:start dashboard:start",
+    "all": "npm-run-all setup start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrainBuzzer/dashboard_acl.git"
+  },
+  "author": "Aditya Giri <dtrg21@hyperlog.io>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrainBuzzer/dashboard_acl/issues"
+  },
+  "homepage": "https://github.com/BrainBuzzer/dashboard_acl#readme",
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

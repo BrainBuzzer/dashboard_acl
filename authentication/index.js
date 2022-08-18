@@ -82,5 +82,5 @@ app.post("/login", (req, res) => {
 
 // listen to app on port 3000
 app.listen(3000, () => {
-  console.log("listening on port 3000");
+  console.log("Authentication Server started on port 3000");
 });

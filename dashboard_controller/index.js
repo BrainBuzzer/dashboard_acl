@@ -13,5 +13,5 @@ app.use("/", mainRouter);
 
 // start server on port 3001
 app.listen(3001, () => {
-  console.log("Server started on port 3001");
+  console.log("Dashboard server started on port 3001");
 });

@@ -1,7 +1,5 @@
 // dotenv
-require("dotenv").config({
-  path: "../.env",
-});
+require("dotenv").config();
 
 // init postgres connection
 const { Client } = require("pg");
@@ -13,6 +11,14 @@ const client = new Client({
   port: process.env.DB_PORT,
 });
 client.connect();
+
+function closeClient() {
+  console.log("server is starting cleanup");
+  return client
+    .end()
+    .then(() => console.log("client has disconnected"))
+    .catch((err) => console.error("error during disconnection", err.stack));
+}
 
 // initialize uuid extension in postgres
 client.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`, (err, _res) => {
@@ -71,6 +77,7 @@ client.query(
       console.log(err);
     } else {
       console.log("userdashboard table created");
+      closeClient();
     }
   }
 );
