@@ -54,30 +54,3 @@ exports.getAllDashboards = (req, res) => {
     }
   );
 };
-
-exports.getDashboardById = (req, res) => {
-  client.query(
-    `SELECT * FROM dashboards WHERE id = $1 AND user_id = $2`,
-    [req.params.id, req.user.id],
-    (err, response) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({
-          error: err,
-        });
-      } else {
-        if (response.rows.length > 0) {
-          res.status(200).json({
-            id: response.rows[0].id,
-            name: response.rows[0].name,
-            created_at: response.rows[0].created_at,
-          });
-        } else {
-          res.status(404).json({
-            message: "Dashboard not found.",
-          });
-        }
-      }
-    }
-  );
-};

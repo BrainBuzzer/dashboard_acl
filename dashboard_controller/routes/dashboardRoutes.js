@@ -2,6 +2,7 @@ const express = require("express");
 const dashboardRouter = express.Router();
 const dashboardController = require("../controllers/dashboardController");
 const checkAuthentication = require("../middleware/checkAuth");
+const dashboardAcionRouter = require("./dashboardActionsRoutes");
 
 dashboardRouter.post(
   "/create",
@@ -13,10 +14,6 @@ dashboardRouter.get(
   checkAuthentication,
   dashboardController.getAllDashboards
 );
-dashboardRouter.get(
-  "/:id",
-  checkAuthentication,
-  dashboardController.getDashboardById
-);
+dashboardRouter.use("/:id", dashboardAcionRouter);
 
 module.exports = dashboardRouter;
