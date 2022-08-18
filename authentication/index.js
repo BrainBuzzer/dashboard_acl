@@ -21,7 +21,10 @@ const client = new Client({
 });
 client.connect();
 
-// create endpoint for signup and login
+/**
+ * Signup a user.
+ * Required body params: email, password, name
+ */
 app.post("/signup", (req, res) => {
   const { name, email, password } = req.body;
   const hash = bcrypt.hashSync(password, 10);
@@ -42,7 +45,11 @@ app.post("/signup", (req, res) => {
   );
 });
 
-// create endpoint for login using jwt
+/**
+ * Login a user.
+ * Required body params: email, password
+ * Returns a JWT token if successful.
+ */
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   client.query(`SELECT * FROM users WHERE email = $1`, [email], (err, _res) => {
@@ -59,6 +66,9 @@ app.post("/login", (req, res) => {
         );
         res.status(200).json({
           token,
+          id: user.id,
+          name: user.name,
+          email: user.email,
           message: "Successfully logged in",
         });
       } else {
