@@ -1,6 +1,5 @@
-const permissionsConst = require("../constants/permissions");
-const accessConst = require("../constants/access");
 const { Client } = require("pg");
+const checkValidity = require("../utils/permissionValidity");
 require("dotenv").config();
 
 const client = new Client({
@@ -42,32 +41,9 @@ exports.addUserToDashboard = (req, res) => {
     }
   );
 
-  // verify permissions
-  let validPermissions = true;
-  if (permissions && permissions.length > 0) {
-    permissions.includes("read") || permissions.push("read");
-    permissions.forEach((permission) => {
-      if (!permissionsConst.hasOwnProperty(permission)) {
-        validPermissions = false;
-      }
-    });
-  } else {
-    permissions = ["read"];
-  }
+  const valid = checkValidity(permissions, access);
 
-  // verify access
-  let validAccess = true;
-  if (access && access.length > 0) {
-    access.forEach((access) => {
-      if (!accessConst.hasOwnProperty(access)) {
-        validAccess = false;
-      }
-    });
-  } else {
-    access = [];
-  }
-
-  if (validPermissions && validAccess) {
+  if (valid) {
     client.query(
       `INSERT INTO userdashboard (dashboard_id, user_id, permissions, access) VALUES ($1, $2, $3, $4)`,
       [req.params.id, user_id, permissions, access],
@@ -112,32 +88,9 @@ exports.removeUserFromDashboard = (req, res) => {
 
 exports.changePermissions = (req, res) => {
   let { permissions, access } = req.body;
-  // verify permissions
-  let validPermissions = true;
-  if (permissions && permissions.length > 0) {
-    permissions.includes("read") || permissions.push("read");
-    permissions.forEach((permission) => {
-      if (!permissionsConst.hasOwnProperty(permission)) {
-        validPermissions = false;
-      }
-    });
-  } else {
-    permissions = ["read"];
-  }
+  const valid = checkValidity(permissions, access);
 
-  // verify access
-  let validAccess = true;
-  if (access && access.length > 0) {
-    access.forEach((access) => {
-      if (!accessConst.hasOwnProperty(access)) {
-        validAccess = false;
-      }
-    });
-  } else {
-    access = [];
-  }
-
-  if (validPermissions && validAccess) {
+  if (valid) {
     client.query(
       `UPDATE userdashboard SET permissions = $1, access = $2 WHERE user_id = $3 AND dashboard_id = $4`,
       [permissions, access, req.params.user_id, req.params.id],
