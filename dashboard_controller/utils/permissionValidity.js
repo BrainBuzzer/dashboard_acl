@@ -1,3 +1,10 @@
+/**
+ * This file is solely for managing the permissions and access of the user.
+ *
+ * If new permission or access level is required to be added for the application,
+ * add it the following constants and use the checkAccess function to check the validity of the permission.
+ */
+
 const permissionsConst = {
   read: "read",
   write: "write",

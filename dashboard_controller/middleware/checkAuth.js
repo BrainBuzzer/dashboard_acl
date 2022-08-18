@@ -2,6 +2,13 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 
+/**
+ * Check if user is authenticated
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
+ */
 const checkAuthentication = (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
   if (!token) {

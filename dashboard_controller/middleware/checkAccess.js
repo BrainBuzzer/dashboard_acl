@@ -11,6 +11,11 @@ const client = new Client({
 });
 client.connect();
 
+/**
+ * Check whether user has right permission to perform the action
+ * @param {*} permission
+ * @returns
+ */
 const checkAccess = (permission) => (req, res, next) => {
   // check dashboard with id from param
   client

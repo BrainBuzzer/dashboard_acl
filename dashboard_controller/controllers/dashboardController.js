@@ -10,6 +10,11 @@ const client = new Client({
 });
 client.connect();
 
+/**
+ * Create a new dashboard for the user.
+ * @param {*} req
+ * @param {*} res
+ */
 exports.createDashboard = (req, res) => {
   const { name } = req.body;
   client.query(
@@ -30,6 +35,11 @@ exports.createDashboard = (req, res) => {
   );
 };
 
+/**
+ * Get all dashboards for the user.
+ * @param {*} req
+ * @param {*} res
+ */
 exports.getAllDashboards = (req, res) => {
   client.query(
     `SELECT * FROM dashboards WHERE user_id = $1`,

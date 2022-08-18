@@ -11,6 +11,11 @@ const client = new Client({
 });
 client.connect();
 
+/**
+ * Get the specific dashboard of the user by ID.
+ * @param {*} req
+ * @param {*} res
+ */
 exports.getDashboardById = (req, res) => {
   res.status(200).json({
     id: req.dashboard.id,
@@ -19,6 +24,11 @@ exports.getDashboardById = (req, res) => {
   });
 };
 
+/**
+ * Add a user to a dashboard.
+ * @param {*} req
+ * @param {*} res
+ */
 exports.addUserToDashboard = (req, res) => {
   let { user_id, permissions, access } = req.body;
   // check if user id exists in users table
@@ -67,6 +77,11 @@ exports.addUserToDashboard = (req, res) => {
   }
 };
 
+/**
+ * Delete a user from a dashboard.
+ * @param {*} req
+ * @param {*} res
+ */
 exports.removeUserFromDashboard = (req, res) => {
   client.query(
     `DELETE FROM userdashboard WHERE user_id = $1 AND dashboard_id = $2`,
@@ -86,6 +101,11 @@ exports.removeUserFromDashboard = (req, res) => {
   );
 };
 
+/**
+ * Change the permissions of a user in a dashboard.
+ * @param {*} req
+ * @param {*} res
+ */
 exports.changePermissions = (req, res) => {
   let { permissions, access } = req.body;
   const valid = checkValidity(permissions, access);
@@ -114,6 +134,11 @@ exports.changePermissions = (req, res) => {
   }
 };
 
+/**
+ * Change the name of a dashboard.
+ * @param {*} req
+ * @param {*} res
+ */
 exports.changeDashboardName = (req, res) => {
   const { name } = req.body;
   client.query(
