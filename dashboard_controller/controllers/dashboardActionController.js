@@ -57,3 +57,23 @@ exports.addUserToDashboard = (req, res) => {
     }
   );
 };
+
+exports.changeDashboardName = (req, res) => {
+  const { name } = req.body;
+  client.query(
+    `UPDATE dashboards SET name = $1 WHERE id = $2`,
+    [name, req.params.id],
+    (err, _res) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({
+          error: err,
+        });
+      } else {
+        res.status(200).json({
+          message: "Dashboard name updated.",
+        });
+      }
+    }
+  );
+};

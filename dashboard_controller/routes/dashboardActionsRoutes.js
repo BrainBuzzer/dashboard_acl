@@ -13,6 +13,12 @@ dashboardActionRouter.get(
 );
 
 dashboardActionRouter.post(
+  "/change_dashboard_name",
+  [checkAuthentication, checkAccess],
+  dashboardActionController.changeDashboardName
+);
+
+dashboardActionRouter.post(
   "/add_user",
   [checkAuthentication, checkAccess],
   dashboardActionController.addUserToDashboard
