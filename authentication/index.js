@@ -1,5 +1,6 @@
 const { Client } = require("pg");
 const express = require("express");
+const morgan = require("morgan");
 const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -9,6 +10,7 @@ const bodyParser = require("body-parser");
 dotenv.config();
 
 const app = express();
+app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
