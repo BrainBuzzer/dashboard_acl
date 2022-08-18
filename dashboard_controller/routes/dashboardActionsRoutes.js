@@ -20,8 +20,20 @@ dashboardActionRouter.post(
 
 dashboardActionRouter.post(
   "/add_user",
-  [checkAuthentication, checkAccess("add_user")],
+  [checkAuthentication, checkAccess("user_management")],
   dashboardActionController.addUserToDashboard
+);
+
+dashboardActionRouter.post(
+  "/remove_user",
+  [checkAuthentication, checkAccess("user_management")],
+  dashboardActionController.removeUserFromDashboard
+);
+
+dashboardActionRouter.post(
+  "/change_permissions",
+  [checkAuthentication, checkAccess("user_management")],
+  dashboardActionController.changePermissions
 );
 
 module.exports = dashboardActionRouter;
